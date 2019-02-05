@@ -54,13 +54,7 @@ $lots = [
 ];
 
 function format_price ($price) {
-    if (is_float ($price)) {
-        $price = ceil($price);
-    }
-    if ($price >= 1000) {
-        $price = number_format($price, 0, ".", " ");
-    }
-    $price .= " <b class='rub'>р</b>";
+    $price = number_format($price, 0, ".", " ") . " <b class='rub'>р</b>";
     return $price;
 };
 ?>
