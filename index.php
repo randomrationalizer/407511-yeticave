@@ -54,6 +54,7 @@ $lots = [
 ];
 
 function format_price ($price) {
+    $price = ceil($price);
     $price = number_format($price, 0, ".", " ") . " <b class='rub'>р</b>";
     return $price;
 };
