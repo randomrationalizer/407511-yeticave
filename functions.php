@@ -32,5 +32,12 @@ function format_price ($price) {
     $price = number_format($price, 0, ".", " ") . " <b class='rub'>р</b>";
 
     return $price;
+};
+
+function show_time_left () {
+    $current_time = date_create("now");
+    $end_time = date_create("tomorrow");
+    $time_left = date_interval_format(date_diff($end_time, $current_time), "%H:%I");
+    return $time_left;
 }
 ?>

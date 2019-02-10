@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set("Europe/Moscow");
 $user_name = 'Маргарита';
 $categories = ["Доски и лыжи", "Крепления", "Ботинки", "Одежда", "Инструменты", "Разное"];
 $lots = [
