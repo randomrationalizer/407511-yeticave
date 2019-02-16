@@ -23,11 +23,6 @@ function filter_data ($text) {
 };
 
 function format_price ($price) {
-    if (is_string ($price)) {
-        $price = strip_tags($price);
-        $price = str_replace(",", ".", $price);
-        settype($price, "float");
-    }
     $price = ceil($price);
     $price = number_format($price, 0, ".", " ") . " <b class='rub'>р</b>";
 
