@@ -1,7 +1,7 @@
 CREATE DATABASE `407511-yeticave`
     DEFAULT CHARACTER SET utf8
     DEFAULT COLLATE utf8_general_ci;
-USE `yeticave407511`;
+USE `407511-yeticave`;
 
 CREATE TABLE `category` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -10,12 +10,12 @@ CREATE TABLE `category` (
 
 CREATE TABLE `lot` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `add_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `start_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `name` VARCHAR(255) NOT NULL,
     `description` TEXT(500) NOT NULL,
     `img_path` VARCHAR(255) NOT NULL,
     `start_price` INT NOT NULL,
-    `end_date` TIMESTAMP NOT NULL,
+    `end_date` DATETIME NOT NULL,
     `step` INT NOT NULL,
     `author_id` INT NOT NULL,
     `winner_id` INT DEFAULT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE `lot` (
 
 CREATE TABLE `bid` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `price` INT NOT NULL,
     `user_id` INT NOT NULL,
     `lot_id` INT NOT NULL
@@ -32,7 +32,7 @@ CREATE TABLE `bid` (
 
 CREATE TABLE `user` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `registration_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `registration_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `email` VARCHAR(128) NOT NULL UNIQUE,
     `username` VARCHAR(128) NOT NULL,
     `password` VARCHAR(64) NOT NULL,
