@@ -48,7 +48,8 @@ SELECT `l`.`name`, `l`.`start_price`, `l`.`img_path`, MAX(`b`.`price`) AS `max_p
     GROUP BY `l`.`id`;
 
 -- Показывает лот по его id
-SELECT * FROM `lot` AS `l` 
+SELECT  `l`.`id`,  `l`.`start_date`,  `l`.`name`,  `l`.`description`,  `l`.`img_path`,  `l`.`start_price`,  `l`.`end_date`,  `l`.`step`,  `l`.`author_id`,  `l`.`winner_id`, `c`.`name` AS `category`
+    FROM `lot` AS `l` 
     JOIN `category` AS `c` 
     ON `l`.`category_id` = `c`.`id` 
     WHERE `l`.`id` = 1;
