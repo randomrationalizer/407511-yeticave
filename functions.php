@@ -16,6 +16,18 @@ function include_template($name, $data) {
     return $result;
 };
 
+function get_data($connect, $sql) {
+    $result = mysqli_query($connect, $sql);
+
+    if ($result) {
+        $result_data = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    } else {
+        print("Ошибка MySQL: " + mysqli_error($connect)); 
+    }
+
+    return $result_data;
+};
+
 function filter_data ($text) {
     $text = htmlspecialchars($text);
 
