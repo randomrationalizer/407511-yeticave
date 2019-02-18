@@ -16,6 +16,18 @@ function include_template($name, $data) {
     return $result;
 };
 
+function get_data($connect, $sql) {
+    $result = mysqli_query($connect, $sql);
+
+    if ($result) {
+        $result_data = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    } else {
+        print("Ошибка MySQL: " + mysqli_error($connect)); 
+    }
+
+    return $result_data;
+};
+
 function filter_data ($text) {
     $text = htmlspecialchars($text);
 
@@ -29,10 +41,10 @@ function format_price ($price) {
     return $price;
 };
 
-function show_time_left () {
-    $current_time = date_create("now");
-    $end_time = date_create("tomorrow");
-    $time_left = date_interval_format(date_diff($end_time, $current_time), "%H:%I");
+function show_time_left ($start, $end) {
+    $start_time = new DateTime($start);
+    $end_time = new DateTime($end);
+    $time_left = date_interval_format(date_diff($start_time, $end_time), "%H:%I");
     return $time_left;
 }
 ?>
