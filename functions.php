@@ -28,6 +28,27 @@ function get_data($connect, $sql) {
     return $result_data;
 };
 
+function get_lot_by_id($connect, $id) {
+    $lot_sql = "SELECT  `l`.`id`,  `l`.`start_date`,  `l`.`name`,  `l`.`description`,  `l`.`img_path`, `l`.`end_date`, `l`.`start_price`, `l`.`step`, `c`.`name` AS `category`, MAX(`b`.`price`) AS `current_price`
+    FROM `lot` AS `l` 
+    JOIN `category` AS `c` 
+    ON `l`.`category_id` = `c`.`id` 
+    LEFT JOIN `bid` AS `b` 
+    ON `b`.`lot_id` = `l`.`id`
+    WHERE `l`.`id` = " . $id;
+
+    $result = mysqli_query($connect, $lot_sql);
+
+    if ($result) {
+        $result_data = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    } else {
+        print("Ошибка MySQL: " + mysqli_error($connect)); 
+    }
+
+    return $result_data;
+
+};
+
 function filter_data ($text) {
     $text = htmlspecialchars($text);
 
@@ -39,6 +60,14 @@ function format_price ($price) {
     $price = number_format($price, 0, ".", " ") . " <b class='rub'>р</b>";
 
     return $price;
+};
+
+function show_current_price ($start_price, $current_price) {
+    return $current_price ? $current_price : $start_price;
+};
+
+function show_min_bid ($start_price, $current_price, $step) {
+    return $current_price ? $current_price + $step : $start_price + $step;
 };
 
 function show_time_left ($start, $end) {
