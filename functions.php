@@ -1,4 +1,6 @@
 <?php
+require_once("mysql_helper.php");
+
 function include_template($name, $data) {
     $name = 'templates/' . $name;
     $result = '';
@@ -76,4 +78,5 @@ function show_time_left ($start, $end) {
     $time_left = date_interval_format(date_diff($start_time, $end_time), "%H:%I");
     return $time_left;
 }
+
 ?>
