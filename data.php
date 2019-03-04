@@ -16,4 +16,7 @@ $lots_sql = "SELECT `l`.`id`, `l`.`name`, `c`.`name` AS `category`, `l`.`start_p
 // Запрос на получение списка категорий
 $categories_sql = "SELECT * FROM `category`";
 
+$categories = get_data($link, $categories_sql);
+$lots = get_data($link, $lots_sql);
+
 ?>

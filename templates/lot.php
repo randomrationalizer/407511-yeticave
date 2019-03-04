@@ -31,7 +31,7 @@
               <button type="submit" class="button">Сделать ставку</button>
             </form>
           </div>
-          <div class="history">
+          <!-- <div class="history">
             <h3>История ставок (<span>10</span>)</h3>
             <table class="history__list">
               <tr class="history__item">
@@ -85,7 +85,7 @@
                 <td class="history__time">19.03.17 в 10:20</td>
               </tr>
             </table>
-          </div>
+          </div> -->
         </div>
       </div>
     </section>
