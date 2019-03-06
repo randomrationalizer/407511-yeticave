@@ -32,7 +32,7 @@ $is_auth = rand(0, 1);
         <?php else : ?>
             <ul class="user-menu__list">
                 <li class="user-menu__item">
-                    <a href="#">Регистрация</a>
+                    <a href="signup.php">Регистрация</a>
                 </li>
                 <li class="user-menu__item">
                     <a href="#">Вход</a>
