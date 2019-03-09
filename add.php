@@ -70,35 +70,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $errors["file"] = "Вы не загрузили файл";
     }
-
-    // Если найдены ошибки в заполнении формы
-    if (count($errors)) {
-        $page_content = include_template("add.php", ["lot" => $new_lot, "errors" => $errors, "categories" => $categories]);
-        $layout_content = include_template("layout.php", ["page_content" => $page_content, "page_title" => "Добавить лот", "user_name" => $user_name, "categories" => $categories]);
-        print($layout_content);
-        exit;
-    }
     
     // Если форма заполенена правильно
-    $sql_add_lot = "INSERT INTO `lot` (`start_date`, `name`, `description`, `img_path`, `start_price`, `end_date`, `step`, `author_id`, `winner_id`, `category_id`) VALUES (NOW(), ?, ?, ?, ?, ?, ?, 1, NULL, ?)";
+    if (empty($errors)) {
+        $sql_add_lot = "INSERT INTO `lot` (`start_date`, `name`, `description`, `img_path`, `start_price`, `end_date`, `step`, `author_id`, `winner_id`, `category_id`) VALUES (NOW(), ?, ?, ?, ?, ?, ?, 1, NULL, ?)";
 
-    $stmt = db_get_prepare_stmt($link, $sql_add_lot, [$new_lot['name'], $new_lot['description'], $new_lot["img_path"], $new_lot["start_price"], $new_lot["end_date"], $new_lot['step'], $new_lot['category']]);
+        $stmt = db_get_prepare_stmt($link, $sql_add_lot, [$new_lot['name'], $new_lot['description'], $new_lot["img_path"], $new_lot["start_price"], $new_lot["end_date"], $new_lot['step'], $new_lot['category']]);
 
-    $res = mysqli_stmt_execute($stmt);
+        $res = mysqli_stmt_execute($stmt);
 
-    if ($res) {
-        $lot_id = mysqli_insert_id($link);
-        header("Location: lot.php?id=" . $lot_id);
+        if ($res) {
+            $lot_id = mysqli_insert_id($link);
+            header("Location: lot.php?id=" . $lot_id);
+        }
+            
+        $page_content = include_template("error.php", ["error_header" => "Ошибка запроса", "error_text" => mysqli_error($link)]);
+        $layout_content = include_template("layout.php", ["page_content" => $page_content, "page_title" => "Ошибка отправки формы", "user_name" => $user_name, "categories" => $categories]);
+        print($layout_content);
+
+        exit;
     }
-        
-    $page_content = include_template("error.php", ["error_header" => "Ошибка запроса", "error_text" => mysqli_error($link)]);
-    $layout_content = include_template("layout.php", ["page_content" => $page_content, "page_title" => "Ошибка отправки формы", "user_name" => $user_name, "categories" => $categories]);
-    print($layout_content);
-
-    exit;
 }
 
-// Если форма не отправлена, выводит страницу с пустой формой
+// Выводит страницу с пустой формой или с формой с ошибками
 $page_content = include_template("add.php", ["lot" => $new_lot, "errors" => $errors, "categories" => $categories]);
 $layout_content = include_template("layout.php", ["page_content" => $page_content, "page_title" => "Добавить лот", "user_name" => $user_name, "categories" => $categories]);
 print($layout_content);
