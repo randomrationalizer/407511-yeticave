@@ -27,11 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Проверка email на существование в БД
-    $email = mysqli_real_escape_string($link, $user["email"]);
-    $sql_check_email = "SELECT `user`.`id` FROM `user` WHERE `user`.`email` = '$email'";
-    $result = mysqli_query($link, $sql_check_email);
-
-    if (mysqli_num_rows($result) > 0) {
+    if (mysqli_num_rows(find_user_by_email($link, $user["email"])) > 0) {
         $errors["email"] = "Пользователь с таким email уже существует";
     }
 
@@ -71,17 +67,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: login.php");
         }
                 
-        $page_content = include_template("error.php", ["error_header" => "Ошибка запроса", "error_text" => mysqli_error($link)]);
-        $layout_content = include_template("layout.php", ["page_content" => $page_content, "page_title" => "Ошибка отправки формы", "user_name" => $user_name, "categories" => $categories]);
+        $page_content = include_template("error.php", [
+            "error_header" => "Ошибка запроса",
+            "error_text" => mysqli_error($link)
+        ]);
+        $layout_content = include_template("layout.php", [
+            "page_content" => $page_content,
+            "user_name" => $user_name,
+            "is_auth" => $is_auth,
+            "page_title" => "Ошибка отправки формы",
+            "categories" => $categories
+        ]);
         print($layout_content);
 
         exit;
     }
+} 
+
+// Если форма не была отправлена
+if (isset($_SESSION["user"])) {
+    header("Location: /"); 
 }
 
-// Выводит страницу с пустой формой или с формой с ошибками
-$page_content = include_template("signup.php", ["signup" => $user, "errors" => $errors, "categories" => $categories]);
-$layout_content = include_template("layout.php", ["page_content" => $page_content, "page_title" => "Регистрация пользователя", "user_name" => $user_name, "categories" => $categories]);
+// Выводит страницу с пустой формой или форму с ошибками
+$page_content = include_template("signup.php", [
+    "signup" => $user,
+    "errors" => $errors
+]);
+$layout_content = include_template("layout.php", [
+    "page_content" => $page_content,
+    "user_name" => $user_name,
+    "is_auth" => $is_auth,
+    "user_avatar" => $user_avatar,
+    "page_title" => "Регистрация пользователя",
+    "categories" => $categories
+]);
 print($layout_content);
 
 ?>

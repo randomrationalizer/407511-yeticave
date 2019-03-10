@@ -1,6 +1,3 @@
-<?php
-$is_auth = rand(0, 1);
-?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -25,9 +22,13 @@ $is_auth = rand(0, 1);
         <a class="main-header__add-lot button" href="add.php">Добавить лот</a>
 
         <nav class="user-menu">
-        <?php if ($is_auth === 1): ?>
+        <?php if ($is_auth): ?>
+            <div class="user-menu__image">
+                <img src="<?=$user_avatar; ?>" width="40px" height="40px">
+            </div>
             <div class="user-menu__logged">
-                <p><?=$user_name; ?></p>
+                <p><?=filter_data($user_name); ?></p>
+                <p><a href="logout.php">Выход</a></p>
             </div>
         <?php else : ?>
             <ul class="user-menu__list">
@@ -35,7 +36,7 @@ $is_auth = rand(0, 1);
                     <a href="signup.php">Регистрация</a>
                 </li>
                 <li class="user-menu__item">
-                    <a href="#">Вход</a>
+                    <a href="login.php">Вход</a>
                 </li>
             </ul>
         <?php endif; ?>

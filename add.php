@@ -84,17 +84,58 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: lot.php?id=" . $lot_id);
         }
             
-        $page_content = include_template("error.php", ["error_header" => "Ошибка запроса", "error_text" => mysqli_error($link)]);
-        $layout_content = include_template("layout.php", ["page_content" => $page_content, "page_title" => "Ошибка отправки формы", "user_name" => $user_name, "categories" => $categories]);
+        $page_content = include_template("error.php", [
+            "error_header" => "Ошибка запроса",
+            "error_text" => mysqli_error($link)
+        ]);
+        $layout_content = include_template("layout.php", [
+            "page_content" => $page_content,
+            "user_name" => $user_name,
+            "is_auth" => $is_auth,
+            "user_avatar" => $user_avatar,
+            "page_title" => "Ошибка отправки формы",
+            "categories" => $categories
+        ]);
         print($layout_content);
 
         exit;
     }
-}
+} else {
+    // Если пользователь не авторизован
+    if (!isset($_SESSION["user"])) {
+        http_response_code(403);
+        $page_content = include_template("error.php", [
+            "error_header" => "403 Доступ запрещен",
+            "error_text" => "Доступ к данной странице разрешен только зарегистрированным пользователям."
+        ]);
+        $layout_content = include_template("layout.php", [
+            "page_content" => $page_content,
+            "user_name" => $user_name,
+            "is_auth" => $is_auth,
+            "user_avatar" => $user_avatar,
+            "page_title" => "403 Доступ запрещен",
+            "categories" => $categories
+        ]);
+        print($layout_content);
 
-// Выводит страницу с пустой формой или с формой с ошибками
-$page_content = include_template("add.php", ["lot" => $new_lot, "errors" => $errors, "categories" => $categories]);
-$layout_content = include_template("layout.php", ["page_content" => $page_content, "page_title" => "Добавить лот", "user_name" => $user_name, "categories" => $categories]);
-print($layout_content);
+        exit;
+    }
+        
+    // Выводит страницу с пустой формой или с формой с ошибками
+    $page_content = include_template("add.php", [
+        "lot" => $new_lot,
+        "errors" => $errors,
+        "categories" => $categories
+    ]);
+    $layout_content = include_template("layout.php", [
+        "page_content" => $page_content,
+        "user_name" => $user_name,
+        "is_auth" => $is_auth,
+        "user_avatar" => $user_avatar,
+        "page_title" => "Добавить лот",
+        "categories" => $categories
+    ]);
+    print($layout_content);
+}
 
 ?>

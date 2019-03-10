@@ -1,6 +1,9 @@
 <?php
 date_default_timezone_set("Europe/Moscow");
-$user_name = 'Маргарита';
+
+$is_auth = isset($_SESSION["user"]) ? true : false;
+$user_name = $is_auth ? $_SESSION["user"]["username"] : "";
+$user_avatar = $is_auth ? $_SESSION["user"]["avatar_path"] : "";
 
 $categories = [];
 $lots = [];
