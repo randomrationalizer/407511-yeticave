@@ -1,5 +1,5 @@
 <?php
-$is_auth = rand(0, 1);
+$is_auth = isset($_SESSION["user"]) ? 1 : 0;
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -26,8 +26,12 @@ $is_auth = rand(0, 1);
 
         <nav class="user-menu">
         <?php if ($is_auth === 1): ?>
+            <div class="user-menu__image">
+                <img src="<?=$_SESSION["user"]["avatar_path"]; ?>" width="40px" height="40px">
+            </div>
             <div class="user-menu__logged">
-                <p><?=$user_name; ?></p>
+                <p><?=filter_data($_SESSION["user"]["username"]); ?></p>
+                <p><a href="logout.php">Выход</a></p>
             </div>
         <?php else : ?>
             <ul class="user-menu__list">
@@ -35,7 +39,7 @@ $is_auth = rand(0, 1);
                     <a href="signup.php">Регистрация</a>
                 </li>
                 <li class="user-menu__item">
-                    <a href="#">Вход</a>
+                    <a href="login.php">Вход</a>
                 </li>
             </ul>
         <?php endif; ?>

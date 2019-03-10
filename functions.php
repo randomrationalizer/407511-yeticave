@@ -77,6 +77,14 @@ function show_time_left ($start, $end) {
     $end_time = new DateTime($end);
     $time_left = date_interval_format(date_diff($start_time, $end_time), "%H:%I");
     return $time_left;
+};
+
+function find_user_by_email ($connect, $user_email) {
+    $email = mysqli_real_escape_string($connect, $user_email);
+    $sql_check_email = "SELECT * FROM `user` WHERE `user`.`email` = '$email'";
+    $result = mysqli_query($connect, $sql_check_email);
+  
+    return $result;
 }
 
 ?>
