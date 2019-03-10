@@ -44,8 +44,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Выводит форму с ошибками
-    $page_content = include_template("login.php", ["login" => $login, "errors" => $errors, "categories" => $categories]);
-    $layout_content = include_template("layout.php", ["page_content" => $page_content, "page_title" => "Вход на сайт", "categories" => $categories]);
+    $page_content = include_template("login.php", [
+        "login" => $login,
+        "errors" => $errors
+    ]);
+    $layout_content = include_template("layout.php", [
+        "page_content" => $page_content,
+        "user_name" => $user_name,
+        "is_auth" => $is_auth,
+        "user_avatar" => $user_avatar,
+        "page_title" => "Вход на сайт",
+        "categories" => $categories
+    ]);
     print($layout_content);
     
 } else {
@@ -54,8 +64,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: /"); 
     }
 
-    $page_content = include_template("login.php", ["login" => [], "errors" => [], "categories" => $categories]);
-    $layout_content = include_template("layout.php", ["page_content" => $page_content, "page_title" => "Вход на сайт", "categories" => $categories]);
+    $page_content = include_template("login.php", [
+        "login" => [],
+        "errors" => []
+    ]);
+    $layout_content = include_template("layout.php", [
+        "page_content" => $page_content,
+        "user_name" => $user_name,
+        "is_auth" => $is_auth,
+        "user_avatar" => $user_avatar,
+        "page_title" => "Вход на сайт",
+        "categories" => $categories
+    ]);
     print($layout_content);
 }
 

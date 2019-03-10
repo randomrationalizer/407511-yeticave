@@ -67,8 +67,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: login.php");
         }
                 
-        $page_content = include_template("error.php", ["error_header" => "Ошибка запроса", "error_text" => mysqli_error($link)]);
-        $layout_content = include_template("layout.php", ["page_content" => $page_content, "page_title" => "Ошибка отправки формы", "categories" => $categories]);
+        $page_content = include_template("error.php", [
+            "error_header" => "Ошибка запроса",
+            "error_text" => mysqli_error($link)
+        ]);
+        $layout_content = include_template("layout.php", [
+            "page_content" => $page_content,
+            "user_name" => $user_name,
+            "is_auth" => $is_auth,
+            "page_title" => "Ошибка отправки формы",
+            "categories" => $categories
+        ]);
         print($layout_content);
 
         exit;
@@ -81,8 +90,18 @@ if (isset($_SESSION["user"])) {
 }
 
 // Выводит страницу с пустой формой или форму с ошибками
-$page_content = include_template("signup.php", ["signup" => $user, "errors" => $errors, "categories" => $categories]);
-$layout_content = include_template("layout.php", ["page_content" => $page_content, "page_title" => "Регистрация пользователя", "categories" => $categories]);
+$page_content = include_template("signup.php", [
+    "signup" => $user,
+    "errors" => $errors
+]);
+$layout_content = include_template("layout.php", [
+    "page_content" => $page_content,
+    "user_name" => $user_name,
+    "is_auth" => $is_auth,
+    "user_avatar" => $user_avatar,
+    "page_title" => "Регистрация пользователя",
+    "categories" => $categories
+]);
 print($layout_content);
 
 ?>

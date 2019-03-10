@@ -22,7 +22,7 @@
                 Мин. ставка <span><?=format_price(show_min_bid($lot["current_price"], $lot["start_price"], $lot["step"])); ?></span>
               </div>
             </div>
-            <?php if (isset($_SESSION["user"])): ?>
+            <?php if ($is_auth): ?>
               <form class="lot-item__form" action="https://echo.htmlacademy.ru" method="post">
                 <p class="lot-item__form-item form__item form__item--invalid">
                   <label for="cost">Ваша ставка</label>
