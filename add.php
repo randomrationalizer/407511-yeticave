@@ -6,6 +6,26 @@ require_once("data.php");
 $errors = [];
 $new_lot = [];
 
+// Если пользователь не авторизован, показывает 403 ошибку
+if (!$is_auth) {
+    http_response_code(403);
+    $page_content = include_template("error.php", [
+        "error_header" => "403 Доступ запрещен",
+        "error_text" => "Доступ к данной странице разрешен только зарегистрированным пользователям."
+    ]);
+    $layout_content = include_template("layout.php", [
+        "page_content" => $page_content,
+        "user_name" => $user_name,
+        "is_auth" => $is_auth,
+        "user_avatar" => $user_avatar,
+        "page_title" => "403 Доступ запрещен",
+        "categories" => $categories
+    ]);
+    print($layout_content);
+
+    exit;
+}
+
 // Проверяет, была ли отправлена форма
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -73,9 +93,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     // Если форма заполенена правильно
     if (empty($errors)) {
-        $sql_add_lot = "INSERT INTO `lot` (`start_date`, `name`, `description`, `img_path`, `start_price`, `end_date`, `step`, `author_id`, `winner_id`, `category_id`) VALUES (NOW(), ?, ?, ?, ?, ?, ?, 1, NULL, ?)";
+        $sql_add_lot = "INSERT INTO `lot` (`start_date`, `name`, `description`, `img_path`, `start_price`, `end_date`, `step`, `author_id`, `winner_id`, `category_id`) VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, NULL, ?)";
 
-        $stmt = db_get_prepare_stmt($link, $sql_add_lot, [$new_lot['name'], $new_lot['description'], $new_lot["img_path"], $new_lot["start_price"], $new_lot["end_date"], $new_lot['step'], $new_lot['category']]);
+        $stmt = db_get_prepare_stmt($link, $sql_add_lot, [$new_lot['name'], $new_lot['description'], $new_lot["img_path"], $new_lot["start_price"], $new_lot["end_date"], $new_lot['step'], $user_id, $new_lot['category']]);
 
         $res = mysqli_stmt_execute($stmt);
 
@@ -100,42 +120,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         exit;
     }
-} else {
-    // Если пользователь не авторизован
-    if (!isset($_SESSION["user"])) {
-        http_response_code(403);
-        $page_content = include_template("error.php", [
-            "error_header" => "403 Доступ запрещен",
-            "error_text" => "Доступ к данной странице разрешен только зарегистрированным пользователям."
-        ]);
-        $layout_content = include_template("layout.php", [
-            "page_content" => $page_content,
-            "user_name" => $user_name,
-            "is_auth" => $is_auth,
-            "user_avatar" => $user_avatar,
-            "page_title" => "403 Доступ запрещен",
-            "categories" => $categories
-        ]);
-        print($layout_content);
-
-        exit;
-    }
-        
-    // Выводит страницу с пустой формой или с формой с ошибками
-    $page_content = include_template("add.php", [
-        "lot" => $new_lot,
-        "errors" => $errors,
-        "categories" => $categories
-    ]);
-    $layout_content = include_template("layout.php", [
-        "page_content" => $page_content,
-        "user_name" => $user_name,
-        "is_auth" => $is_auth,
-        "user_avatar" => $user_avatar,
-        "page_title" => "Добавить лот",
-        "categories" => $categories
-    ]);
-    print($layout_content);
 }
+
+// Выводит страницу с пустой формой или с формой с ошибками
+$page_content = include_template("add.php", [
+    "lot" => $new_lot,
+    "errors" => $errors,
+    "categories" => $categories
+]);
+$layout_content = include_template("layout.php", [
+    "page_content" => $page_content,
+    "user_name" => $user_name,
+    "is_auth" => $is_auth,
+    "user_avatar" => $user_avatar,
+    "page_title" => "Добавить лот",
+    "categories" => $categories
+]);
+print($layout_content);
 
 ?>

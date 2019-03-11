@@ -3,6 +3,10 @@ require_once("connection.php");
 require_once("functions.php");
 require_once("data.php");
 
+if ($is_auth) {
+    header("Location: /"); 
+}
+
 // Проверяет, была ли отправлена форма
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -57,26 +61,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         "categories" => $categories
     ]);
     print($layout_content);
-    
-} else {
-    // Если форма не была отправлена
-    if (isset($_SESSION["user"])) {
-        header("Location: /"); 
-    }
 
-    $page_content = include_template("login.php", [
-        "login" => [],
-        "errors" => []
-    ]);
-    $layout_content = include_template("layout.php", [
-        "page_content" => $page_content,
-        "user_name" => $user_name,
-        "is_auth" => $is_auth,
-        "user_avatar" => $user_avatar,
-        "page_title" => "Вход на сайт",
-        "categories" => $categories
-    ]);
-    print($layout_content);
+    exit;
+    
 }
+
+// Выводит страницу с пустой формой или форму с ошибками
+
+$page_content = include_template("login.php", [
+    "login" => [],
+    "errors" => []
+]);
+$layout_content = include_template("layout.php", [
+    "page_content" => $page_content,
+    "user_name" => $user_name,
+    "is_auth" => $is_auth,
+    "user_avatar" => $user_avatar,
+    "page_title" => "Вход на сайт",
+    "categories" => $categories
+]);
+print($layout_content);
 
 ?>

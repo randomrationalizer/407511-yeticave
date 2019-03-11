@@ -6,6 +6,10 @@ require_once("data.php");
 $errors = [];
 $user = [];
 
+if ($is_auth) {
+    header("Location: /"); 
+}
+
 // Проверяет, была ли отправлена форма
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -82,11 +86,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         exit;
     }
-} 
-
-// Если форма не была отправлена
-if (isset($_SESSION["user"])) {
-    header("Location: /"); 
 }
 
 // Выводит страницу с пустой формой или форму с ошибками
