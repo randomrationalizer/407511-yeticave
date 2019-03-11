@@ -22,10 +22,8 @@ if (isset($_GET['id'])) {
 
         $last_bid_autor = $bids? $bids[0]["user_id"] : null;
 
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if ($lot["author_id"] != $user_id) {
-                require_once("bid.php");
-            }
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            require_once("bid.php");
         }
 
         $page_content = include_template("lot.php", [

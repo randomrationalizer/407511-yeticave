@@ -23,7 +23,7 @@
       <select id="category" name="lot[category]" required>
         <option value="0">Выберите категорию</option>
         <?php foreach ($categories as $category): ?>
-        <?php $is_selected = ($category["id"] == $value) ? "selected" : ""; ?>
+        <?php $is_selected = ($category["id"] === $value) ? "selected" : ""; ?>
           <option value="<?=$category["id"]; ?>" <?=$is_selected; ?>><?=$category["name"]; ?></option>
         <?php endforeach; ?>
       </select>

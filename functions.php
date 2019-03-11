@@ -96,11 +96,11 @@ function show_bid_age ($bid_date) {
     $diff = date_diff($bid_time, $cur_date);
 
     $days_count = date_interval_format($diff, "%d");
-    $days = ($days_count != 0) ? $days_count . " дней" : "";
+    $days = ($days_count !== 0) ? $days_count . " дней" : "";
     $hours_count = date_interval_format($diff, "%h");
-    $hours = ($hours_count != 0) ? $hours_count . " часов" : "";
+    $hours = ($hours_count !== 0) ? $hours_count . " часов" : "";
     $minutes_count = date_interval_format($diff, "%i");
-    $minutes = ($minutes_count != 0) ? $minutes_count . " минут" : "";
+    $minutes = ($minutes_count !== 0) ? $minutes_count . " минут" : "";
     $bid_age = $days . " " . $hours . " " . $minutes . " " . " назад";
     return $bid_age;
 };

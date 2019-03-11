@@ -22,7 +22,7 @@
                 Мин. ставка <span><?=format_price($min_bid); ?></span>
               </div>
             </div>
-            <?php if ($is_auth && ($lot["author_id"] != $user_id) && ($last_bid_autor != $user_id) && !$is_expired): ?>
+            <?php if ($is_auth && ($lot["author_id"] !== $user_id) && ($last_bid_autor !== $user_id) && !$is_expired): ?>
               <form class="lot-item__form" action="lot.php?id=<?=$lot["id"]; ?>" method="post">
                 <?php 
                   $error_class = isset($errors["cost"]) ? "form__item--invalid" : "";

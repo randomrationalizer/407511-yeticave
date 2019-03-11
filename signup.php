@@ -11,7 +11,7 @@ if ($is_auth) {
 }
 
 // Проверяет, была ли отправлена форма
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $user = $_POST["signup"];
 

@@ -27,7 +27,7 @@ if (!$is_auth) {
 }
 
 // Проверяет, была ли отправлена форма
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $new_lot = $_POST["lot"];
 
@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Проверка категории
-    if (empty($new_lot["category"]) || $new_lot["category"] == "0") {
+    if (empty($new_lot["category"]) || $new_lot["category"] === "0") {
         $errors["category"] = "Выберите категорию";
     }
 
