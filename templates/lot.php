@@ -20,8 +20,8 @@
       </div>
       <div class="lot-item__right">
         <div class="lot-item__state">
-          <div class="lot-item__timer timer">
-            <?=show_time_left($lot["start_date"], $lot["end_date"]); ?>
+          <div class="lot-item__timer timer <?=show_finishing_class($lot["end_date"]); ?>">
+            <?=show_time_left($lot["end_date"]); ?>
           </div>
           <div class="lot-item__cost-state">
             <div class="lot-item__rate">
