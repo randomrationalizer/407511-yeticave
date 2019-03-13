@@ -43,7 +43,7 @@
             <?php if(!empty($bids)): ?>
               <?php foreach ($bids as $bid): ?>
                 <tr class="history__item">
-                  <td class="history__name"><?=$bid["username"]; ?></td>
+                  <td class="history__name"><?=filter_data($bid["username"]); ?></td>
                   <td class="history__price"><?=number_format($bid["price"], 0, ".", " "); ?></td>
                   <td class="history__time"><?=show_bid_age($bid["date"]); ?></td>
                 </tr>

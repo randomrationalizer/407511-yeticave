@@ -3,7 +3,7 @@
 	<h2>Регистрация нового аккаунта</h2>
 	<?php 
       $error_class = isset($errors["email"]) ? "form__item--invalid" : "";
-      $value = isset($signup["email"]) ? $signup["email"] : ""; 
+      $value = isset($signup["email"]) ? filter_data($signup["email"]) : ""; 
       $error_text = isset($errors["email"]) ? $errors["email"] : "";
     ?>
 	<div class="form__item <?=$error_class; ?>">

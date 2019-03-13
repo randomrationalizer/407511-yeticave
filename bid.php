@@ -8,12 +8,12 @@ if (empty($new_bid["cost"])) {
 }
 
 // Проверка формата ставки
-if (isset($new_bid["cost"]) && (!filter_var($new_bid["cost"], FILTER_VALIDATE_INT) || $new_bid["cost"] < 0)) {
+if (!empty($new_bid["cost"]) && (!filter_var($new_bid["cost"], FILTER_VALIDATE_INT) || $new_bid["cost"] < 0)) {
 	$errors["cost"] = "Введите целое положительное число";
 }
 
 // Проверка допустимого значения ставки
-if (isset($new_bid["cost"]) && ($new_bid["cost"] < $min_bid)) {
+if (!empty($new_bid["cost"]) && ($new_bid["cost"] < $min_bid)) {
 	$errors["cost"] = "Ваша ставка не должна быть меньше " . $min_bid . " рублей";
 }
 

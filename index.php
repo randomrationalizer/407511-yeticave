@@ -19,7 +19,9 @@ $lots_sql = "SELECT `l`.`id`, `l`.`name`, `c`.`name` AS `category`, `l`.`start_p
     JOIN `category` AS `c` 
     ON l.`category_id` = `c`.`id`
     WHERE `l`.`winner_id` IS NULL
-    ORDER BY `l`.`start_date` DESC LIMIT 9;";
+    AND `l`.`end_date` < NOW() 
+    ORDER BY `l`.`start_date` DESC;";
+
 $lots = get_data($link, $lots_sql);
 
 $page_content = include_template("index.php", [

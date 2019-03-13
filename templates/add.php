@@ -15,7 +15,7 @@
 
     <?php 
       $error_class = isset($errors["category"]) ? "form__item--invalid" : ""; 
-      $value = isset($lot["category"]) ? $lot["category"] : ""; 
+      $value = isset($lot["category"]) ? filter_data($lot["category"]) : ""; 
       $error_text = isset($errors["category"]) ? $errors["category"] : "";
     ?>
     <div class="form__item <?=$error_class; ?>">
@@ -44,8 +44,7 @@
 	  
   <?php 
       $error_class = isset($errors["file"]) ? "form__item--invalid" : "";
-      $uploaded_class = isset($lot["photo"]) ? "form__item--uploaded" : "";
-      $path = isset($lot["photo"]) ? $lot["img_path"] : "";
+      $uploaded_class = isset($lot["img_path"]) ? "form__item--uploaded" : "";
       $error_text = isset($errors["file"]) ? $errors["file"] : "";
   ?>
   <div class="form__item form__item--file <?=$error_class; ?> <?=$uploaded_class; ?>">
@@ -53,11 +52,11 @@
     <div class="preview">
       <button class="preview__remove" type="button">x</button>
       <div class="preview__img">
-        <img src="<?=$path; ?>" name="lot-photo-preview" width="113" height="113" alt="Изображение лота">
+        <img src="" name="lot-photo-preview" width="113" height="113" alt="Изображение лота">
       </div>
     </div>
     <div class="form__input-file">
-      <input class="visually-hidden" type="file" id="photo2" name="lot-photo" value="<?=$path; ?>">
+      <input class="visually-hidden" type="file" id="photo2" name="lot-photo" value="">
       <label for="photo2">
         <span>+ Добавить</span>
       </label>
@@ -68,7 +67,7 @@
   <div class="form__container-three">
     <?php 
       $error_class = isset($errors["start_price"]) ? "form__item--invalid" : "";
-      $value = isset($lot["start_price"]) ? $lot["start_price"] : "";
+      $value = isset($lot["start_price"]) ? intval($lot["start_price"]) : "";
       $error_text = isset($errors["start_price"]) ? $errors["start_price"] : "";
     ?>
     <div class="form__item form__item--small <?=$error_class; ?>">
@@ -79,7 +78,7 @@
 
     <?php
       $error_class = isset($errors["step"]) ? "form__item--invalid" : "";
-      $value = isset($lot["step"]) ? $lot["step"] : "";
+      $value = isset($lot["step"]) ? intval($lot["step"]) : "";
       $error_text = isset($errors["step"]) ? $errors["step"] : "";
     ?>
     <div class="form__item form__item--small <?=$error_class; ?>">
@@ -90,7 +89,7 @@
 
     <?php
       $error_class = isset($errors["end_date"]) ? "form__item--invalid" : "";
-      $value = isset($lot["end_date"]) ? $lot["end_date"] : "";
+      $value = isset($lot["end_date"]) ? filter_data($lot["end_date"]) : "";
       $error_text = isset($errors["end_date"]) ? $errors["end_date"] : "";
     ?>
     <div class="form__item <?=$error_class; ?>">
