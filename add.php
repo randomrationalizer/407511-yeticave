@@ -11,7 +11,8 @@ if (!$is_auth) {
     http_response_code(403);
     $page_content = include_template("error.php", [
         "error_header" => "403 Доступ запрещен",
-        "error_text" => "Доступ к данной странице разрешен только зарегистрированным пользователям."
+        "error_text" => "Доступ к данной странице разрешен только зарегистрированным пользователям.",
+        "categories" => $categories
     ]);
     $layout_content = include_template("layout.php", [
         "page_content" => $page_content,
@@ -49,9 +50,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (empty($errors["category"])) {
         $sql_check_category = "SELECT * FROM `category` WHERE `category`.`id` = ?";
         $stmt = db_get_prepare_stmt($link, $sql_check_category, [$new_lot['category']]);
-        $res = mysqli_stmt_execute($stmt);
+        mysqli_stmt_execute($stmt);
+        $res = mysqli_stmt_get_result($stmt);
 
-        if (!$res) {
+        $existing_category = null;
+
+        if ($res) {
+            $existing_category = mysqli_fetch_assoc($res);
+        }
+
+        if (is_null($existing_category)) {
             $errors["category"] = "Ошибка БД: выбранной категории не существует";
         }
     }
@@ -120,7 +128,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             
         $page_content = include_template("error.php", [
             "error_header" => "Ошибка запроса",
-            "error_text" => mysqli_error($link)
+            "error_text" => mysqli_error($link),
+            "categories" => $categories
         ]);
         $layout_content = include_template("layout.php", [
             "page_content" => $page_content,

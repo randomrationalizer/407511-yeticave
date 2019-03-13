@@ -51,7 +51,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 // Выводит страницу с пустой формой или форму с ошибками
 $page_content = include_template("login.php", [
     "login" => $login,
-    "errors" => $errors
+    "errors" => $errors,
+    "categories" => $categories
 ]);
 $layout_content = include_template("layout.php", [
     "page_content" => $page_content,

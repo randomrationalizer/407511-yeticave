@@ -12,11 +12,6 @@
 function db_get_prepare_stmt($link, $sql, $data = []) {
     $stmt = mysqli_prepare($link, $sql);
 
-    // if (!$stmt) {
-    //     var_dump($link->error);
-    //     exit;
-    // }
-
     if ($data) {
         $types = '';
         $stmt_data = [];

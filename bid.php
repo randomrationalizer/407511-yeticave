@@ -28,7 +28,8 @@ if (empty($errors)) {
 		            
     $page_content = include_template("error.php", [
         "error_header" => "Ошибка запроса",
-        "error_text" => mysqli_error($link)
+        "error_text" => mysqli_error($link),
+        "categories" => $categories
     ]);
     $layout_content = include_template("layout.php", [
         "page_content" => $page_content,
