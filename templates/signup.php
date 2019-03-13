@@ -18,7 +18,7 @@
   ?>
 	<div class="form__item <?=$error_class; ?>">
 		<label for="password">Пароль*</label>
-		<input id="password" type="text" name="signup[password]" placeholder="Введите пароль">
+		<input id="password" type="password" name="signup[password]" placeholder="Введите пароль">
 		<span class="form__error"><?=$error_text; ?></span>
 	</div>
 

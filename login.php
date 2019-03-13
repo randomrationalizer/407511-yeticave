@@ -29,20 +29,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // Проверка на существование пользователя с введенным email
+    $user = null;
     if (empty($errors["email"])) {
         $result = find_user_by_email ($link, $login["email"]);
         $user = $result ? $result : null;
     }
 
     // Если форма заполнена правильно и есть пользователь с таким email
-    if (!count($errors) && $user) {
+    if (!count($errors) && !is_null($user)) {
         if (password_verify($login["password"], $user["password"])) {
             $_SESSION["user"] = $user;
             header("Location: /"); 
         } else {
             $errors["password"] = "Вы ввели неверный пароль";
         }
-    } else {
+    } else if (!count($errors) && is_null($user)) {
         $errors["email"] = "Пользователь с таким email не существует";
     }
 }

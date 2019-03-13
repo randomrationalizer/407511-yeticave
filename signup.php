@@ -29,7 +29,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // Проверка email на существование в БД
-    if (empty($errors["email"]) && count(find_user_by_email($link, $user["email"])) > 0) {
+    $is_user_exist = find_user_by_email($link, $user["email"]);
+    if (empty($errors["email"]) && !is_null($is_user_exist)) {
         $errors["email"] = "Пользователь с таким email уже существует";
     }
 
@@ -42,8 +43,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if (!in_array($file_type, $valid_types, false)) {
             $errors["file"] = "Загрузите изображение в фомате jpg или png";
         } 
-    } else {
-        $errors["file"] = "Вы не загрузили файл";
     }
 
     // Если форма заполенена правильно

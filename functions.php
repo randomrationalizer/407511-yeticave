@@ -55,7 +55,7 @@ function get_data($connect, $sql) {
  * @return array Данные лота
  */
 function get_lot_by_id($connect, $id) {
-    $result_data = [];
+    
     $lot_sql = "SELECT  `l`.`id`,  `l`.`start_date`,  `l`.`name`,  `l`.`description`,  `l`.`img_path`, `l`.`end_date`, `l`.`start_price`, `l`.`step`, `l`.`author_id`, `c`.`name` AS `category`, MAX(`b`.`price`) AS `current_price`
     FROM `lot` AS `l` 
     JOIN `category` AS `c` 
@@ -66,13 +66,13 @@ function get_lot_by_id($connect, $id) {
     GROUP BY `l`.`id`";
 
     $stmt = db_get_prepare_stmt($connect, $lot_sql, [$id]);
-    $res = mysqli_stmt_execute($stmt);
+    mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
+
+    $result_data = [];
 
     if ($result) {
         $result_data = mysqli_fetch_array($result, MYSQLI_ASSOC);
-    } else {
-        print("Ошибка MySQL: " . mysqli_error($connect)); 
     }
 
     return $result_data;
@@ -188,11 +188,11 @@ function find_user_by_email ($connect, $user_email) {
     $stmt = db_get_prepare_stmt($connect, $sql_check_email, [$user_email]);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
+    
+    $result_data = null;
 
     if ($result) {
-        $result_data = mysqli_fetch_array($result, MYSQLI_ASSOC);
-    } else {
-        print("Ошибка MySQL: " . mysqli_error($connect)); 
+        $result_data = mysqli_fetch_assoc($result);
     }
 
     return $result_data;

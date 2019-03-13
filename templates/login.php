@@ -19,7 +19,7 @@
     ?>
     <div class="form__item form__item--last <?=$error_class; ?>">
         <label for="password">Пароль*</label>
-        <input id="password" type="text" name="login[password]" placeholder="Введите пароль" required>
+        <input id="password" type="password" name="login[password]" placeholder="Введите пароль" required>
         <span class="form__error"><?=$error_text; ?></span>
     </div>
     <button type="submit" class="button">Войти</button>
