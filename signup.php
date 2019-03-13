@@ -6,12 +6,14 @@ require_once("data.php");
 $errors = [];
 $user = [];
 
+if ($is_auth) {
+    header("Location: /"); 
+}
+
 // Проверяет, была ли отправлена форма
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $user = $_POST["signup"];
-
-    $errors = [];
     $requered_fields = ["email", "password", "username", "contacts"];
 
     // Проверка на заполение обязательных полей
@@ -22,44 +24,53 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Проверка корректности email
-    if (isset($user["email"]) && (!filter_var($user["email"], FILTER_VALIDATE_EMAIL))) {
+    if (!empty($user["email"]) && (!filter_var($user["email"], FILTER_VALIDATE_EMAIL))) {
         $errors["email"] = "Введите корректный email";
     }
 
     // Проверка email на существование в БД
-    if (mysqli_num_rows(find_user_by_email($link, $user["email"])) > 0) {
+    $is_user_exist = find_user_by_email($link, $user["email"]);
+    if (empty($errors["email"]) && !is_null($is_user_exist)) {
         $errors["email"] = "Пользователь с таким email уже существует";
     }
 
-    // Проверка загруженных изображений
+    // Проверка загруженного изображения
     if (isset($_FILES["avatar"]["name"]) && !empty($_FILES["avatar"]["name"])) {
-            
-        $tmp_name = $_FILES["avatar"]["tmp_name"];
-        $filename = filter_data($_FILES["avatar"]["name"]); // path
-
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $file_type = finfo_file($finfo, $tmp_name);
-
+        $file_type = finfo_file($finfo, $_FILES["avatar"]["tmp_name"]);
         $valid_types = ["image/jpg", "image/jpeg", "image/png"];
 
         if (!in_array($file_type, $valid_types, false)) {
             $errors["file"] = "Загрузите изображение в фомате jpg или png";
-        } else {
-            move_uploaded_file($tmp_name, "img/" . $filename);
-            $user["avatar"] = $filename;
-            $user["avatar_path"] = "img/" . $filename;
-        }
-    } else {
-        $errors["file"] = "Вы не загрузили файл";
+        } 
     }
 
     // Если форма заполенена правильно
     if (empty($errors)) {
+
+        if (isset($_FILES["avatar"]["name"]) && !empty($_FILES["avatar"]["name"])) {
+            $tmp_name = $_FILES["avatar"]["tmp_name"];
+            $filename = filter_data($_FILES["avatar"]["name"]);
+            move_uploaded_file($tmp_name, "img/" . $filename);
+
+            $user["avatar"] = $filename;
+            $user["avatar_path"] = "img/" . $filename;
+        } else {
+            $user["avatar"] = null;
+            $user["avatar_path"] = null;
+        }
+
         $password = password_hash($user["password"], PASSWORD_DEFAULT);
 
         $sql_add_user = "INSERT INTO `user` (`registration_date`, `email`,`username`, `password`, `avatar_path`, `contacts`) VALUES (NOW(), ?, ?, ?, ?, ?)";
 
-        $stmt = db_get_prepare_stmt($link, $sql_add_user, [$user["email"], $user["username"], $password, $user["avatar_path"], $user["contacts"]]);
+        $stmt = db_get_prepare_stmt($link, $sql_add_user, [
+            $user["email"],
+            $user["username"],
+            $password,
+            $user["avatar_path"],
+            $user["contacts"]
+        ]);
 
         $res = mysqli_stmt_execute($stmt);
 
@@ -82,11 +93,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         exit;
     }
-} 
-
-// Если форма не была отправлена
-if (isset($_SESSION["user"])) {
-    header("Location: /"); 
 }
 
 // Выводит страницу с пустой формой или форму с ошибками

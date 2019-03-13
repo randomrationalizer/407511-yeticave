@@ -3,7 +3,7 @@
 	<h2>Регистрация нового аккаунта</h2>
 	<?php 
       $error_class = isset($errors["email"]) ? "form__item--invalid" : "";
-      $value = isset($signup["email"]) ? $signup["email"] : ""; 
+      $value = isset($signup["email"]) ? filter_data($signup["email"]) : ""; 
       $error_text = isset($errors["email"]) ? $errors["email"] : "";
     ?>
 	<div class="form__item <?=$error_class; ?>">
@@ -18,7 +18,7 @@
   ?>
 	<div class="form__item <?=$error_class; ?>">
 		<label for="password">Пароль*</label>
-		<input id="password" type="text" name="signup[password]" placeholder="Введите пароль">
+		<input id="password" type="password" name="signup[password]" placeholder="Введите пароль">
 		<span class="form__error"><?=$error_text; ?></span>
 	</div>
 
@@ -67,5 +67,5 @@
 	</div>
 	  <span class="form__error form__error--bottom">Пожалуйста, исправьте ошибки в форме.</span>
 	  <button type="submit" class="button">Зарегистрироваться</button>
-	  <a class="text-link" href="#">Уже есть аккаунт</a>
+	  <a class="text-link" href="login.php">Уже есть аккаунт</a>
 </form>
