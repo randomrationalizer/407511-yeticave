@@ -36,8 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Проверка на заполение обязательных полей
     foreach ($requered_fields as $field) {
-        $value = trim($new_lot[$field]);
-        if (empty($value)) {
+        if (!isset($new_lot[$field]) || empty(trim($new_lot[$field]))) {
             $errors[$field] = "Поле не заполнено";
         }
     }

@@ -108,7 +108,7 @@ function get_lot_bids ($connect, $id) {
 
     return $result_data;
 
-}
+};
 
 /**
  * Преобразует html симоволы в строке в безопасные значения
@@ -167,7 +167,7 @@ function show_finishing_class ($end) {
         $$classname = "timer--end";
     }
     return $classname;
-}
+};
 
 /**
  * Возвращает строку с временным промежутком с момента размещения ставки
@@ -180,17 +180,17 @@ function show_bid_age ($bid_date) {
     $diff = time() - strtotime($bid_date);
     $bid_age = "";
     if ($diff < 60) {
-        $bid_age = $diff . " секунд назад";
+        $bid_age = $diff . " с назад";
     } else if ($diff > 60 && $diff < 3600) {
-        $bid_age = floor($diff / 60) . " минут назад";
+        $bid_age = floor($diff / 60) . " м назад";
     } else if ($diff > 3600 && $diff < 86400) {
         $hours = floor($diff / 3600);
         $minutes = floor(($diff - $hours * 3600) / 60);
-        $bid_age = $hours . " часов " . $minutes . " минут назад";
+        $bid_age = $hours . " ч " . $minutes . " м назад";
     } else if ($diff > 86400) {
         $days = floor($diff / 86400);
         $hours = floor(($diff - $days * 86400) / 3600);
-        $bid_age = $days . " дня" . $hours . " часов назад";
+        $bid_age = $days . " д" . $hours . " ч назад";
     }
 
     return $bid_age;
