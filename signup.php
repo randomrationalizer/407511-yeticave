@@ -18,7 +18,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Проверка на заполение обязательных полей
     foreach ($requered_fields as $field) {
-        if (empty($user[$field])) {
+        $value = trim($user[$field]);
+        if (!isset($user[$field]) || empty(trim($user[$field]))) {
             $errors[$field] = "Поле не заполнено";
         }
     }
@@ -80,7 +81,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 
         $page_content = include_template("error.php", [
             "error_header" => "Ошибка запроса",
-            "error_text" => mysqli_error($link)
+            "error_text" => mysqli_error($link),
+            "categories" => $categories
         ]);
         $layout_content = include_template("layout.php", [
             "page_content" => $page_content,
@@ -98,7 +100,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 // Выводит страницу с пустой формой или форму с ошибками
 $page_content = include_template("signup.php", [
     "signup" => $user,
-    "errors" => $errors
+    "errors" => $errors,
+    "categories" => $categories
 ]);
 $layout_content = include_template("layout.php", [
     "page_content" => $page_content,

@@ -9,7 +9,8 @@ if (!isset($_GET['id'])) {
     http_response_code(404);
     $page_content = include_template("error.php", [
         "error_header" => "404 Страница не найдена",
-        "error_text" => "Данной страницы не существует на сайте."
+        "error_text" => "Данной страницы не существует на сайте.",
+        "categories" => $categories
     ]);
     $layout_content = include_template("layout.php", [
         "page_content" => $page_content,
@@ -30,7 +31,8 @@ if (empty($lot)) {
     http_response_code(404);
     $page_content = include_template("error.php", [
         "error_header" => "404 Страница не найдена",
-        "error_text" => "Данной страницы не существует на сайте."
+        "error_text" => "Данной страницы не существует на сайте.",
+        "categories" => $categories
     ]);
     $layout_content = include_template("layout.php", [
         "page_content" => $page_content,
@@ -67,7 +69,8 @@ $page_content = include_template("lot.php", [
     "current_price" => $current_price,
     "min_bid" => $min_bid,
     "errors" => $errors,
-    "bids" => $bids
+    "bids" => $bids,
+    "categories" => $categories
 ]);
 $layout_content = include_template("layout.php", [
     "page_content" => $page_content,

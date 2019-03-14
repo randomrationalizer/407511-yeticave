@@ -108,7 +108,7 @@ function get_lot_bids ($connect, $id) {
 
     return $result_data;
 
-}
+};
 
 /**
  * Преобразует html симоволы в строке в безопасные значения
@@ -140,17 +140,33 @@ function format_price ($price) {
 /**
  * Возвращает строку со временем, оставшимся до конца размещения лота
  *
- * @param $start stringt Дата начала размещения лота
+ * @param $end stringt Дата окончания размещения лота
  *
- * @param $start stringt Дата окончания размещения лота
- *
- * @return string Строка с отформатированным интервалом времени
+ * @return string Строка с интервалом времени
  */
-function show_time_left ($start, $end) {
-    $start_time = new DateTime($start);
-    $end_time = new DateTime($end);
-    $time_left = date_interval_format(date_diff($start_time, $end_time), "%H:%I");
-    return $time_left;
+function show_time_left ($end) {
+    $diff = strtotime($end) - time();
+    $hours = floor($diff / 3600);
+    $minutes = floor(($diff - $hours * 3600) / 60);
+    return $hours . ":" . $minutes;
+};
+
+/**
+ * Возвращает строку со модификатором класса для таймера лота, торги по которому завершаются или уже завершены
+ *
+ * @param $end stringt Дата окончания размещения лота
+ *
+ * @return string Строка с именем классом
+ */
+function show_finishing_class ($end) {
+    $classname = "";
+    $diff = strtotime($end) - time();
+    if ($diff < 3600) {
+        $classname = "timer--finishing";
+    } else if ($diff === 0) {
+        $$classname = "timer--end";
+    }
+    return $classname;
 };
 
 /**
@@ -161,17 +177,22 @@ function show_time_left ($start, $end) {
  * @return string Строка с отформатированным с временным промежутком
  */
 function show_bid_age ($bid_date) {
-    $cur_date = date_create();
-    $bid_time = date_create($bid_date);
-    $diff = date_diff($bid_time, $cur_date);
+    $diff = time() - strtotime($bid_date);
+    $bid_age = "";
+    if ($diff < 60) {
+        $bid_age = $diff . " с назад";
+    } else if ($diff > 60 && $diff < 3600) {
+        $bid_age = floor($diff / 60) . " м назад";
+    } else if ($diff > 3600 && $diff < 86400) {
+        $hours = floor($diff / 3600);
+        $minutes = floor(($diff - $hours * 3600) / 60);
+        $bid_age = $hours . " ч " . $minutes . " м назад";
+    } else if ($diff > 86400) {
+        $days = floor($diff / 86400);
+        $hours = floor(($diff - $days * 86400) / 3600);
+        $bid_age = $days . " д" . $hours . " ч назад";
+    }
 
-    $days_count = date_interval_format($diff, "%d");
-    $days = ($days_count !== "0") ? $days_count . " дней" : "";
-    $hours_count = date_interval_format($diff, "%h");
-    $hours = ($hours_count !== "0") ? $hours_count . " часов" : "";
-    $minutes_count = date_interval_format($diff, "%i");
-    $minutes = ($minutes_count !== "0") ? $minutes_count . " минут" : "";
-    $bid_age = $days . " " . $hours . " " . $minutes . " " . " назад";
     return $bid_age;
 };
 

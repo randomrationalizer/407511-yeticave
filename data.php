@@ -9,7 +9,7 @@ $user_id = $is_auth ? intval($_SESSION["user"]["id"]) : null;
 $categories = [];
 
 // Получение списка категорий
-$categories_sql = "SELECT * FROM `category`";
+$categories_sql = "SELECT * FROM `category` ORDER BY `category`. `id`";
 $categories = get_data($link, $categories_sql);
 
 ?>
