@@ -111,6 +111,94 @@ function get_lot_bids ($connect, $id) {
 };
 
 /**
+ * Выполняет запрос к БД и возвращает данные категории по её id
+ *
+ * @param $connect mysqli Ресурс соединения
+ * @param $id int Идентификатор категории
+ *
+ * @return array Массив с данными категории
+ */
+function get_category_by_id($connect, $id) {
+
+    $category_sql = "SELECT * FROM `category` WHERE `id` = ?;";
+
+    $stmt = db_get_prepare_stmt($connect, $category_sql, [$id]);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    $result_data = [];
+     
+    if ($result) {
+        $result_data = mysqli_fetch_assoc($result);
+    }
+
+    return $result_data;
+};
+
+/**
+ * Выполняет запрос к БД и возвращает массив открытых лотов, принадлежащих категории
+ * @param $connect mysqli Ресурс соединения
+ * @param $id int Идентификатор категории
+ * @param $items_on_page int Количество лотов на странице
+ * @param $offset int Смещение для пагинации
+ *
+ * @return array Массив лотов
+ */
+function get_lots_by_category_id ($connect, $id, $items_on_page, $offset) {
+    
+    $lots_in_category_sql = "SELECT `l`.`id`, `l`.`name`, `c`.`name` AS `category`, `l`.`start_price`, `l`.`img_path`, `l`.`start_date`, `l`.`end_date`
+        FROM `lot` AS `l`
+        JOIN `category` AS `c` 
+        ON l.`category_id` = `c`.`id`
+        WHERE `l`.`winner_id` IS NULL
+        AND `l`.`end_date` > NOW() 
+        AND `c`.`id` = ?
+        ORDER BY `l`.`start_date` DESC LIMIT ? OFFSET ?;";
+
+
+    $stmt = db_get_prepare_stmt($connect, $lots_in_category_sql, [$id, $items_on_page, $offset]);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    $result_data = [];
+
+    if ($result) {
+        $result_data = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
+
+    return $result_data;
+};
+
+/**
+ * Возвращает количество открытых лотов в категории
+ * @param $connect mysqli Ресурс соединения
+ * @param $id int Идентификатор категории
+ *
+ * @return array Массив лотов
+ */
+
+function count_lots_in_category ($connect, $id) {
+
+    $lots_in_category_sql = "SELECT COUNT(*) AS `cnt`
+        FROM `lot` 
+        WHERE `lot`.`winner_id` IS NULL
+        AND `lot`.`end_date` > NOW() 
+        AND `lot`.`category_id` = ?;";
+    
+    $stmt = db_get_prepare_stmt($connect, $lots_in_category_sql, [$id]);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    $items_count = null;
+
+    if ($result) {
+        $items_count= mysqli_fetch_assoc($result)['cnt'];
+    }
+
+    return $items_count;
+};
+
+/**
  * Преобразует html симоволы в строке в безопасные значения
  *
  * @param $text string Исходная строка
@@ -146,9 +234,14 @@ function format_price ($price) {
  */
 function show_time_left ($end) {
     $diff = strtotime($end) - time();
-    $hours = floor($diff / 3600);
-    $minutes = floor(($diff - $hours * 3600) / 60);
-    return $hours . ":" . $minutes;
+    $time_left = "00:00";
+    if ($diff > 0) {
+        $hours = floor($diff / 3600);
+        $minutes = floor(($diff - $hours * 3600) / 60);
+        $time_left = $hours . ":" . $minutes;
+    }
+    
+    return $time_left;
 };
 
 /**
@@ -163,8 +256,6 @@ function show_finishing_class ($end) {
     $diff = strtotime($end) - time();
     if ($diff < 3600) {
         $classname = "timer--finishing";
-    } else if ($diff === 0) {
-        $$classname = "timer--end";
     }
     return $classname;
 };
