@@ -99,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (empty($errors)) {
         if (isset($_FILES["lot-photo"]["name"]) && !empty($_FILES["lot-photo"]["name"])) {
             $tmp_name = $_FILES["lot-photo"]["tmp_name"];
-            $filename = filter_data($_FILES["lot-photo"]["name"]);
+            $filename = htmlspecialchars($_FILES["lot-photo"]["name"]);
             move_uploaded_file($tmp_name, "img/" . $filename);
             $new_lot["img_path"] = "img/" . $filename;
         } else {

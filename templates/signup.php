@@ -13,7 +13,7 @@
 		<h2>Регистрация нового аккаунта</h2>
 		<?php 
 				$error_class = isset($errors["email"]) ? "form__item--invalid" : "";
-				$value = isset($signup["email"]) ? filter_data($signup["email"]) : ""; 
+				$value = isset($signup["email"]) ? htmlspecialchars($signup["email"]) : ""; 
 				$error_text = isset($errors["email"]) ? $errors["email"] : "";
 			?>
 		<div class="form__item <?=$error_class; ?>">
@@ -34,7 +34,7 @@
 
 		<?php 
 				$error_class = isset($errors["username"]) ? "form__item--invalid" : "";
-				$value = isset($signup["username"]) ? filter_data($signup["username"]) : ""; 
+				$value = isset($signup["username"]) ? htmlspecialchars($signup["username"]) : ""; 
 				$error_text = isset($errors["username"]) ? $errors["username"] : "";
 			?>
 		<div class="form__item <?=$error_class; ?>">
@@ -45,7 +45,7 @@
 
 		<?php 
 				$error_class = isset($errors["contacts"]) ? "form__item--invalid" : "";
-				$value = isset($signup["contacts"]) ? filter_data($signup["contacts"]) : ""; 
+				$value = isset($signup["contacts"]) ? htmlspecialchars($signup["contacts"]) : ""; 
 				$error_text = isset($errors["contacts"]) ? $errors["contacts"] : "";
 			?>
 		<div class="form__item <?=$error_class; ?>">

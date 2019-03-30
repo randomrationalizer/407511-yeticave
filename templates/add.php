@@ -14,7 +14,7 @@
     <div class="form__container-two">
       <?php 
         $error_class = isset($errors["name"]) ? "form__item--invalid" : "";
-        $value = isset($lot["name"]) ? filter_data($lot["name"]) : ""; 
+        $value = isset($lot["name"]) ? htmlspecialchars($lot["name"]) : ""; 
         $error_text = isset($errors["name"]) ? $errors["name"] : "";
       ?>
       <div class="form__item <?=$error_class; ?>">
@@ -25,7 +25,7 @@
 
       <?php 
         $error_class = isset($errors["category"]) ? "form__item--invalid" : ""; 
-        $value = isset($lot["category"]) ? filter_data($lot["category"]) : ""; 
+        $value = isset($lot["category"]) ? htmlspecialchars($lot["category"]) : ""; 
         $error_text = isset($errors["category"]) ? $errors["category"] : "";
       ?>
       <div class="form__item <?=$error_class; ?>">
@@ -43,7 +43,7 @@
 
     <?php 
       $error_class = isset($errors["description"]) ? "form__item--invalid" : ""; 
-      $value = isset($lot["description"]) ? filter_data($lot["description"]) : "";
+      $value = isset($lot["description"]) ? htmlspecialchars($lot["description"]) : "";
       $error_text = isset($errors["description"]) ? $errors["description"] : "";
     ?>
     <div class="form__item form__item--wide <?=$error_class; ?>">
@@ -99,7 +99,7 @@
 
       <?php
         $error_class = isset($errors["end_date"]) ? "form__item--invalid" : "";
-        $value = isset($lot["end_date"]) ? filter_data($lot["end_date"]) : "";
+        $value = isset($lot["end_date"]) ? htmlspecialchars($lot["end_date"]) : "";
         $error_text = isset($errors["end_date"]) ? $errors["end_date"] : "";
       ?>
       <div class="form__item <?=$error_class; ?>">

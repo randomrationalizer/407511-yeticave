@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         if (isset($_FILES["avatar"]["name"]) && !empty($_FILES["avatar"]["name"])) {
             $tmp_name = $_FILES["avatar"]["tmp_name"];
-            $filename = filter_data($_FILES["avatar"]["name"]);
+            $filename = htmlspecialchars($_FILES["avatar"]["name"]);
             move_uploaded_file($tmp_name, "img/" . $filename);
 
             $user["avatar"] = $filename;

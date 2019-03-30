@@ -11,7 +11,7 @@ if (!isset($_GET["search"]) || empty($search_query) || mb_strlen($search_query, 
     header("Location: " . $_SERVER['HTTP_REFERER']);
 }
 
-$search_all_results = "*" . filter_data($search_query) . "*"; // Поиск всех вхождений запроса
+$search_all_results = "*" . htmlspecialchars($search_query) . "*"; // Поиск всех вхождений запроса
 
 $cur_page = $_GET["page"] ?? 1;
 $lots_on_page = 2;

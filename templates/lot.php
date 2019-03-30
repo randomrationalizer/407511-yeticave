@@ -9,14 +9,14 @@
     </ul>
   </nav>
   <section class="lot-item container">
-    <h2><?=filter_data($lot["name"]); ?></h2>
+    <h2><?=htmlspecialchars($lot["name"]); ?></h2>
     <div class="lot-item__content">
       <div class="lot-item__left">
         <div class="lot-item__image">
-          <img src="<?=filter_data($lot["img_path"]); ?>" width="730" height="548" alt="<?=filter_data($lot["name"]); ?>">
+          <img src="<?=htmlspecialchars($lot["img_path"]); ?>" width="730" height="548" alt="<?=htmlspecialchars($lot["name"]); ?>">
         </div>
-        <p class="lot-item__category">Категория: <span><?=filter_data($lot["category"]); ?></span></p>
-        <p class="lot-item__description"><?=filter_data($lot["description"]); ?></p>
+        <p class="lot-item__category">Категория: <span><?=htmlspecialchars($lot["category"]); ?></span></p>
+        <p class="lot-item__description"><?=htmlspecialchars($lot["description"]); ?></p>
       </div>
       <div class="lot-item__right">
         <div class="lot-item__state">
@@ -53,7 +53,7 @@
           <?php if(!empty($bids)): ?>
             <?php foreach ($bids as $bid): ?>
             <tr class="history__item">
-              <td class="history__name"><?=filter_data($bid["username"]); ?></td>
+              <td class="history__name"><?=htmlspecialchars($bid["username"]); ?></td>
               <td class="history__price"><?=number_format($bid["price"], 0, ".", " "); ?></td>
               <td class="history__time"><?=show_bid_age($bid["date"]); ?></td>
             </tr>

@@ -14,7 +14,7 @@
 
       <?php 
         $error_class = isset($login["email"]) ? "form__item--invalid" : "";
-        $value = isset($login["email"]) ? filter_data($login["email"]) : ""; 
+        $value = isset($login["email"]) ? htmlspecialchars($login["email"]) : ""; 
         $error_text = isset($errors["email"]) ? $errors["email"] : "";
       ?>
       <div class="form__item <?=$error_class; ?>">
@@ -25,7 +25,7 @@
 
       <?php 
         $error_class = isset($errors["password"]) ? "form__item--invalid" : "";
-        $error_text = isset($errors["password"]) ? filter_data($errors["password"]) : "";
+        $error_text = isset($errors["password"]) ? htmlspecialchars($errors["password"]) : "";
       ?>
       <div class="form__item form__item--last <?=$error_class; ?>">
           <label for="password">Пароль*</label>

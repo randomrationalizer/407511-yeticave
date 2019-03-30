@@ -261,19 +261,6 @@ function count_lots_in_category ($connect, $id) {
 };
 
 /**
- * Преобразует html симоволы в строке в безопасные значения
- *
- * @param $text string Исходная строка
- *
- * @return string Преобразованная строка
- */
-function filter_data ($text) {
-    $text = htmlspecialchars($text);
-
-    return $text;
-};
-
-/**
  * Преобразует цену к требуемому формату, добавляет символ рубля
  *
  * @param $price int/float Исходное значение цены
