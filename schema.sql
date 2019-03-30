@@ -39,3 +39,6 @@ CREATE TABLE `user` (
     `avatar_path` VARCHAR(255),
     `contacts` VARCHAR(255) NOT NULL
 );
+
+CREATE FULLTEXT INDEX lot_ft_search 
+ON `lot`(`name`, `description`);

@@ -52,10 +52,7 @@ $pages_count = ceil($lots_count / $lots_on_page);
 $offset = ($cur_page - 1) * $lots_on_page;
 
 $pages = range(1, $pages_count);
-
 $lots_in_category = get_lots_by_category_id($link, $id, $lots_on_page, $offset);
-
-
 
 $page_content = include_template("all_lots.php", [
     "lots" => $lots_in_category,

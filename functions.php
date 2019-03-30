@@ -170,11 +170,73 @@ function get_lots_by_category_id ($connect, $id, $items_on_page, $offset) {
 };
 
 /**
+ * Выполняет запрос к БД и возвращает количество лотов, в имени или описании которых встречается искомое слово/фраза
+ * @param $connect mysqli Ресурс соединения
+ * @param $query str Поисковый запрос
+ *
+ * @return int Число лотов, релевантных запросу
+ */
+function count_lots_by_query ($connect, $query) {
+
+    $lots_count_by_query_sql = "SELECT COUNT(*) AS `cnt` 
+        FROM `lot` 
+        WHERE `lot`.`winner_id` IS NULL
+        AND `lot`.`end_date` > NOW() 
+        AND MATCH(`lot`.`name`, `lot`.`description`) AGAINST(? IN BOOLEAN MODE);";
+    
+    $stmt = db_get_prepare_stmt($connect, $lots_count_by_query_sql, [$query]);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    $items_count = null;
+
+    if ($result) {
+        $items_count= mysqli_fetch_assoc($result)['cnt'];
+    }
+
+    return $items_count;
+};
+
+/**
+ * Выполняет запрос к БД и возвращает массив из n открытых лотов, начиная с лота под номером m, в имени или описании которых встречается искомое слово/фраза
+ * @param $connect mysqli Ресурс соединения
+ * @param $query str Поисковый запрос
+ * @param $items_on_page int Количество лотов в выборке, n
+ * @param $offset int Номер лота m, смещение для пагинации
+ *
+ * @return array Массив n лотов, релевантных запросу
+ */
+function get_lots_by_search_query ($connect, $query, $items_on_page, $offset) {
+    
+    $lots_by_query_sql = "SELECT `l`.`id`, `l`.`name`, `l`.`description`, `c`.`name` AS `category`, `l`.`start_price`, `l`.`img_path`, `l`.`start_date`, `l`.`end_date`
+        FROM `lot` AS `l`
+        JOIN `category` AS `c` 
+        ON l.`category_id` = `c`.`id`
+        WHERE `l`.`winner_id` IS NULL
+        AND `l`.`end_date` > NOW() 
+        AND MATCH(`l`.`name`, `l`.`description`) AGAINST(? IN BOOLEAN MODE) 
+        GROUP BY `l`.`id` 
+        ORDER BY `l`.`start_date` DESC LIMIT ? OFFSET ?;";
+
+    $stmt = db_get_prepare_stmt($connect, $lots_by_query_sql, [$query, $items_on_page, $offset]);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    $result_data = [];
+
+    if ($result) {
+        $result_data = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
+
+    return $result_data;
+};
+
+/**
  * Возвращает количество открытых лотов в категории
  * @param $connect mysqli Ресурс соединения
  * @param $id int Идентификатор категории
  *
- * @return array Массив лотов
+ * @return int Число лотов в категории
  */
 
 function count_lots_in_category ($connect, $id) {

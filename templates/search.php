@@ -1,18 +1,18 @@
 <main>
-  <nav class="nav">
-    <ul class="nav__list container">
-    <?php foreach ($categories as $category) : ?>
-      <li class="nav__item">
-        <a href="all_lots.php?id=<?=$category["id"] ;?>"><?=$category["name"] ;?></a>
-      </li>
-    <?php endforeach; ?>
-    </ul>
-  </nav>
-<div class="container">
-      <section class="lots">
-        <h2>Все лоты в категории <span><?=$current_category["name"] ;?></span></h2>
+	<nav class="nav">
+		<ul class="nav__list container">
+		<?php foreach ($categories as $category) : ?>
+	  		<li class="nav__item">
+				<a href="all_lots.php?id=<?=$category["id"] ;?>"><?=$category["name"] ;?></a>
+	  		</li>
+		<?php endforeach; ?>
+		</ul>
+	</nav>
+	<div class="container">
+	<section class="lots">
+        <h2>Результаты поиска по запросу «<span><?=$search_query; ?></span>»</h2>
         <?php if(empty($lots)): ?>
-        <p>В категории пока нет лотов :(</p>
+        <p>Ничего не найдено по вашему запросу :(</p>
         <?php endif; ?>
         <ul class="lots__list">
         <?php foreach ($lots as $lot) : ?>
@@ -34,14 +34,13 @@
             </li>
         <?php endforeach; ?>
         </ul>
-      </section>
-
-      <?php if ($pages_count > 1): ?>
+	  </section>
+	  <?php if ($pages_count > 1): ?>
         <ul class="pagination-list">
         
           <li class="pagination-item pagination-item-prev">
           <?php if ($cur_page > 1): ?>
-            <a href="all_lots.php?id=<?=$current_category["id"]; ?>&page=<?=($cur_page - 1); ?>">Назад</a>
+            <a href="search.php?search=<?=$search_query; ?>&page=<?=($cur_page - 1); ?>">Назад</a>
           <?php else: ?>
             <a>Назад</a>
           <?php endif; ?>
@@ -50,13 +49,13 @@
           <?php foreach ($pages as $page): ?>
             <?php $active_class = (intval($page) === intval($cur_page)) ? "pagination-item-active" : ""; ?>
             <li class="pagination-item <?=$active_class; ?>">
-              <a href="all_lots.php?id=<?=$current_category["id"]; ?>&page=<?=$page; ?>"><?=$page; ?></a>
+              <a href="search.php?search=<?=$search_query; ?>&page=<?=$page; ?>"><?=$page; ?></a>
             </li>
           <?php endforeach; ?>
 
           <li class="pagination-item pagination-item-next">
           <?php if ($cur_page < $pages_count): ?>
-            <a href="all_lots.php?id=<?=$current_category["id"]; ?>&page=<?=($cur_page + 1); ?>">Вперед</a>
+            <a href="search.php?search=<?=$search_query; ?>&page=<?=($cur_page + 1); ?>">Вперед</a>
           <?php else: ?>
             <a>Вперед</a>
           <?php endif;?>
